@@ -72,6 +72,25 @@ func main() {
 		},
 	})
 
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "launch-test",
+		Short: "Launch Chrome and print WebSocket URL",
+		Run: func(cmd *cobra.Command, args []string) {
+			result, err := browser.LaunchChrome(browser.LaunchOptions{Headless: true})
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Println(result.WebSocketURL)
+
+			// Kill the browser after printing the URL
+			if result.Cmd != nil && result.Cmd.Process != nil {
+				result.Cmd.Process.Kill()
+			}
+		},
+	})
+
 	rootCmd.Version = version
 	rootCmd.SetVersionTemplate("Clicker v{{.Version}}\n")
 
