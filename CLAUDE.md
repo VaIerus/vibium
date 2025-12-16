@@ -8,6 +8,9 @@ Browser automation for AI agents and humans.
 - FILESYSTEM.md — Target project structure
 - V2-ROADMAP.md — Deferred features (don't build these yet)
 
+## Reference Docs
+- WebDriver-Bidi-Spec.md — Defines the BiDirectional WebDriver Protocol, a mechanism for remote control of user agents
+
 ## Current Goal
 
 V1 by Christmas. Start with Day 1 in V1-ROADMAP.md.
@@ -22,6 +25,9 @@ V1 by Christmas. Start with Day 1 in V1-ROADMAP.md.
 ## Rules
 
 - Follow V1-ROADMAP.md one milestone at a time
+- Follow FILESYSTEM.md for filename and file paths guidance (unless there's a good reason not to.)
 - Verify each checkpoint before moving on
 - Don't add code from future milestones
-- Git commit after each completed milestone
+- After each completed milestone:
+  - Have a human verify the mileston is complete.
+  - Git commit the changes
