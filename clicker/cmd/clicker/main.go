@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/vibium/clicker/internal/bidi"
@@ -370,6 +371,63 @@ func main() {
 
 			fmt.Printf("Found: tag=%s, text=\"%s\", box={x:%.0f, y:%.0f, w:%.0f, h:%.0f}\n",
 				info.Tag, info.Text, info.Box.X, info.Box.Y, info.Box.Width, info.Box.Height)
+		},
+	})
+
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "click [url] [selector]",
+		Short: "Navigate to a URL and click an element",
+		Example: `  clicker click https://example.com "a"
+  # Clicks the link and navigates to the target page`,
+		Args: cobra.ExactArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			url := args[0]
+			selector := args[1]
+
+			fmt.Println("Launching browser...")
+			launchResult, err := browser.Launch(browser.LaunchOptions{Headless: true})
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error launching browser: %v\n", err)
+				os.Exit(1)
+			}
+			defer launchResult.Close()
+
+			fmt.Println("Connecting to BiDi...")
+			conn, err := bidi.Connect(launchResult.WebSocketURL)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error connecting: %v\n", err)
+				os.Exit(1)
+			}
+			defer conn.Close()
+
+			client := bidi.NewClient(conn)
+
+			fmt.Printf("Navigating to %s...\n", url)
+			_, err = client.Navigate("", url)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error navigating: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Printf("Clicking element: %s\n", selector)
+			err = client.ClickElement("", selector)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error clicking: %v\n", err)
+				os.Exit(1)
+			}
+
+			// TODO: Replace sleep with proper navigation wait (poll URL change or listen for BiDi events)
+			fmt.Println("Waiting for navigation...")
+			time.Sleep(1 * time.Second)
+
+			// Get current URL after click
+			currentURL, err := client.GetCurrentURL()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error getting URL: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Printf("Click complete! Current URL: %s\n", currentURL)
 		},
 	})
 
