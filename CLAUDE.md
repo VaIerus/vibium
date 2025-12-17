@@ -31,3 +31,4 @@ V1 by Christmas. Start with Day 1 in V1-ROADMAP.md.
 - After each completed milestone:
   - Have a human verify the milestone is complete.
   - Git commit the changes
+- When adding new command line options to the bin/clicker binary, be sure to add a simple example and sample output (or short description)

@@ -326,6 +326,53 @@ func main() {
 		},
 	})
 
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "find [url] [selector]",
+		Short: "Navigate to a URL and find an element by CSS selector",
+		Example: `  clicker find https://example.com "a"
+  # Prints: tag=A, text="Learn more", box={x,y,w,h}`,
+		Args: cobra.ExactArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			url := args[0]
+			selector := args[1]
+
+			fmt.Println("Launching browser...")
+			launchResult, err := browser.Launch(browser.LaunchOptions{Headless: true})
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error launching browser: %v\n", err)
+				os.Exit(1)
+			}
+			defer launchResult.Close()
+
+			fmt.Println("Connecting to BiDi...")
+			conn, err := bidi.Connect(launchResult.WebSocketURL)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error connecting: %v\n", err)
+				os.Exit(1)
+			}
+			defer conn.Close()
+
+			client := bidi.NewClient(conn)
+
+			fmt.Printf("Navigating to %s...\n", url)
+			_, err = client.Navigate("", url)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error navigating: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Printf("Finding element: %s\n", selector)
+			info, err := client.FindElement("", selector)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error finding element: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Printf("Found: tag=%s, text=\"%s\", box={x:%.0f, y:%.0f, w:%.0f, h:%.0f}\n",
+				info.Tag, info.Text, info.Box.X, info.Box.Y, info.Box.Width, info.Box.Height)
+		},
+	})
+
 	rootCmd.Version = version
 	rootCmd.SetVersionTemplate("Clicker v{{.Version}}\n")
 
