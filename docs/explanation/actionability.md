@@ -50,6 +50,7 @@ An element is visible if it has non-zero dimensions and isn't hidden by CSS:
   return JSON.stringify({ visible: true });
 }
 ```
+<sub>[`actionability.go#L26`](https://github.com/VibiumDev/vibium/blob/66b5bc3/clicker/internal/features/actionability.go#L26)</sub>
 
 ### Stable
 
@@ -69,6 +70,7 @@ An element is stable if its position hasn't changed over 50ms. This catches CSS 
 // Wait 50ms, then check again
 // Stable = (position at T) equals (position at T+50ms)
 ```
+<sub>[`actionability.go#L70`](https://github.com/VibiumDev/vibium/blob/66b5bc3/clicker/internal/features/actionability.go#L70)</sub>
 
 The Go code runs `getBoundingClientRect()` twice with a 50ms gap and compares the results.
 
@@ -103,6 +105,7 @@ This is the most subtle check. An element might be visible but covered by anothe
   });
 }
 ```
+<sub>[`actionability.go#L98`](https://github.com/VibiumDev/vibium/blob/66b5bc3/clicker/internal/features/actionability.go#L98)</sub>
 
 ### Enabled
 
@@ -134,6 +137,7 @@ An element is disabled if it has the `disabled` attribute, `aria-disabled="true"
   return JSON.stringify({ enabled: true });
 }
 ```
+<sub>[`actionability.go#L152`](https://github.com/VibiumDev/vibium/blob/66b5bc3/clicker/internal/features/actionability.go#L152)</sub>
 
 ### Editable
 
@@ -173,6 +177,7 @@ For typing, the element must also accept text input:
   return JSON.stringify({ editable: false, reason: 'not a form element or contenteditable' });
 }
 ```
+<sub>[`actionability.go#L217`](https://github.com/VibiumDev/vibium/blob/66b5bc3/clicker/internal/features/actionability.go#L217)</sub>
 
 ## The Autowait Loop
 
