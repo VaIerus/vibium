@@ -2,7 +2,7 @@
 
 **Browser automation without the drama.**
 
-Vibium is browser automation infrastructure built for AI agents. A single Go binary handles browser lifecycle, WebDriver BiDi protocol, and exposes an MCP server — so Claude Code (or any MCP client) can drive a browser with zero setup. Works great for AI agents, test automation, and anything else that needs a browser.
+Vibium is browser automation infrastructure built for AI agents. A single binary handles browser lifecycle, WebDriver BiDi protocol, and exposes an MCP server — so Claude Code (or any MCP client) can drive a browser with zero setup. Works great for AI agents, test automation, and anything else that needs a browser.
 
 ---
 
