@@ -17,6 +17,9 @@ authors = [
 Homepage = "https://vibium.com"
 Repository = "https://github.com/VibiumDev/vibium"
 
+[tool.hatch.build]
+ignore-vcs = true
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/vibium_linux_x64"]
 include = ["src/vibium_linux_x64/bin/*"]
