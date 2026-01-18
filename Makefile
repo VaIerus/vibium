@@ -7,7 +7,7 @@ all: build
 build: build-go build-js
 
 # Build clicker binary
-build-go:
+build-go: deps
 	cd clicker && go build -o bin/clicker ./cmd/clicker
 
 # Build JS client
