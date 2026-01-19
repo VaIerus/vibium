@@ -76,6 +76,18 @@ pip install vibium
 
 ---
 
+## .NET Client
+
+**What:** NuGet package with idiomatic C# API.
+
+**Community implementation:** https://github.com/webdriverbidi-net/vibium-net (by @jimevans)
+
+**Status:** Community project exists. Not officially supported yet, but we hope to include an official .NET client in the future.
+
+**When to build:** When demand warrants official support.
+
+---
+
 ## Java Client
 
 **What:** Maven/Gradle dependency with idiomatic Java API.
